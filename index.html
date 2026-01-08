@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Bootstrap - Install with Crash Recovery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #a0a0a0;
+        }
+
+        .install-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .platform-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .tab.active {
+            background: #4a9eff;
+            color: #fff;
+        }
+
+        .install-content {
+            display: none;
+        }
+
+        .install-content.active {
+            display: block;
+        }
+
+        .code-block {
+            background: #0d1117;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.95em;
+            overflow-x: auto;
+            position: relative;
+            border: 1px solid #30363d;
+        }
+
+        .code-block code {
+            color: #58a6ff;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            background: #238636;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #2ea043;
+        }
+
+        .copy-btn.copied {
+            background: #1f6feb;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature h3 {
+            color: #4a9eff;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .feature p {
+            color: #a0a0a0;
+            font-size: 0.95em;
+        }
+
+        .usage-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .usage-section h2 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .command-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .command-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .command-item code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            color: #7ee787;
+            white-space: nowrap;
+            min-width: 200px;
+        }
+
+        .command-item span {
+            color: #a0a0a0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #606060;
+        }
+
+        footer a {
+            color: #4a9eff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .note {
+            background: rgba(74, 158, 255, 0.1);
+            border-left: 3px solid #4a9eff;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            .command-item {
+                flex-direction: column;
+                gap: 5px;
+            }
+            .command-item code {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Claude Code Bootstrap</h1>
+            <p class="subtitle">Session tracking and crash recovery for Claude Code CLI</p>
+        </header>
+
+        <div class="install-section">
+            <div class="platform-tabs">
+                <button class="tab active" onclick="showPlatform('macos')">macOS</button>
+                <button class="tab" onclick="showPlatform('linux')">Linux</button>
+                <button class="tab" onclick="showPlatform('windows')">Windows</button>
+            </div>
+
+            <div id="macos" class="install-content active">
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode('macos-code')">Copy</button>
+                    <code id="macos-code">curl -fsSL https://raw.githubusercontent.com/fanning/claude-shared-context/main/install.sh | bash</code>
+                </div>
+                <div class="note">
+                    <strong>Note:</strong> Uses <code>ccode</code> command on macOS since <code>cc</code> is the C compiler.
+                </div>
+            </div>
+
+            <div id="linux" class="install-content">
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode('linux-code')">Copy</button>
+                    <code id="linux-code">curl -fsSL https://raw.githubusercontent.com/fanning/claude-shared-context/main/install.sh | bash</code>
+                </div>
+            </div>
+
+            <div id="windows" class="install-content">
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode('windows-code')">Copy</button>
+                    <code id="windows-code">irm https://raw.githubusercontent.com/fanning/claude-shared-context/main/install.ps1 | iex</code>
+                </div>
+                <div class="note">
+                    <strong>Note:</strong> Run in PowerShell. For CMD, use: <code>powershell -Command "irm ... | iex"</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>Session Tracking</h3>
+                <p>Name your sessions with "Project : Goal : Task" format. Terminal title shows current context.</p>
+            </div>
+            <div class="feature">
+                <h3>Crash Recovery</h3>
+                <p>All sessions logged and recoverable. Restore any crashed session with full conversation history.</p>
+            </div>
+            <div class="feature">
+                <h3>Output Logging</h3>
+                <p>Every session automatically logged to disk. Review what any agent was doing before a crash.</p>
+            </div>
+            <div class="feature">
+                <h3>Cross-Platform</h3>
+                <p>Works on Windows, macOS, and Linux with the same commands and shared context.</p>
+            </div>
+        </div>
+
+        <div class="usage-section">
+            <h2>Usage</h2>
+            <div class="command-list">
+                <div class="command-item">
+                    <code>cc -h</code>
+                    <span>Show help and all available options</span>
+                </div>
+                <div class="command-item">
+                    <code>cc "Project : Goal : Task"</code>
+                    <span>Start a named session with context</span>
+                </div>
+                <div class="command-item">
+                    <code>cc -r</code>
+                    <span>Interactive picker to restore any session</span>
+                </div>
+                <div class="command-item">
+                    <code>cc -c</code>
+                    <span>Continue the most recent session</span>
+                </div>
+                <div class="command-item">
+                    <code>cc -l</code>
+                    <span>List all sessions with status</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                <a href="https://github.com/fanning/claude-shared-context">GitHub Repository</a> ·
+                <a href="https://github.com/fanning/claude-shared-context/blob/main/bootstrap/README.md">Documentation</a>
+            </p>
+            <p style="margin-top: 10px;">Part of the AIVision Agent Network</p>
+        </footer>
+    </div>
+
+    <script>
+        function showPlatform(platform) {
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.install-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(platform).classList.add('active');
+        }
+
+        function copyCode(elementId) {
+            const code = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = event.target;
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
