@@ -1,6 +1,6 @@
 #!/bin/bash
 # Hive Code Installer for macOS
-# Double-click this file to install
+# Double-click this file to install - fully automated
 
 clear
 echo ""
@@ -12,41 +12,42 @@ echo ""
 INSTALL_PATH="/usr/local/bin/ccode"
 SESSIONS_DIR="$HOME/.claude-sessions"
 SCRIPT_URL="https://raw.githubusercontent.com/fanning/hive-hiveskill/master/cc.sh"
+NODE_PKG="/tmp/node-installer.pkg"
+NODE_URL="https://nodejs.org/dist/v20.11.0/node-v20.11.0.pkg"
+
+# Check if Node.js is installed
+if ! command -v node &> /dev/null; then
+    echo "Node.js not found. Downloading installer..."
+    echo ""
+    curl -fsSL "$NODE_URL" -o "$NODE_PKG"
+
+    if [ ! -f "$NODE_PKG" ]; then
+        echo "Failed to download Node.js installer."
+        echo "Press any key to close..."
+        read -n 1
+        exit 1
+    fi
+
+    echo "Installing Node.js (you may be prompted for your password)..."
+    echo ""
+    sudo installer -pkg "$NODE_PKG" -target /
+
+    # Clean up
+    rm -f "$NODE_PKG"
+
+    # Refresh PATH
+    export PATH="/usr/local/bin:$PATH"
+
+    echo "Node.js installed."
+    echo ""
+fi
 
 # Check if Claude CLI is installed
 if ! command -v claude &> /dev/null; then
-    echo "Claude CLI not found. Checking for npm..."
-    if ! command -v npm &> /dev/null; then
-        echo ""
-        echo "==================================================="
-        echo "  ERROR: Node.js is required"
-        echo "==================================================="
-        echo ""
-        echo "  Please install Node.js first:"
-        echo "  https://nodejs.org/"
-        echo ""
-        echo "  Or with Homebrew: brew install node"
-        echo ""
-        echo "  Then run this installer again."
-        echo "==================================================="
-        echo ""
-        echo "Press any key to close..."
-        read -n 1
-        exit 1
-    fi
-    echo "Installing Claude CLI via npm..."
+    echo "Installing Claude CLI..."
     echo "This may take a minute..."
     npm install -g @anthropic-ai/claude-code
-    if [ $? -ne 0 ]; then
-        echo ""
-        echo "Failed to install Claude CLI. Please run manually:"
-        echo "  npm install -g @anthropic-ai/claude-code"
-        echo ""
-        echo "Press any key to close..."
-        read -n 1
-        exit 1
-    fi
-    echo "Claude CLI installed successfully."
+    echo "Claude CLI installed."
     echo ""
 fi
 
@@ -73,7 +74,7 @@ if [ -f "$INSTALL_PATH" ]; then
     echo ""
     echo "  Location: $INSTALL_PATH"
     echo ""
-    echo "  Open Terminal and run:"
+    echo "  Open a NEW Terminal window and run:"
     echo "    ccode -h          Show help"
     echo "    ccode \"Project\"   Start a session"
     echo "    ccode -r          Restore a session"

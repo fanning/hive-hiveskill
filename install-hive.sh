@@ -1,6 +1,7 @@
 #!/bin/bash
 # Hive Code Installer for Linux
 # Run: chmod +x install-hive.sh && ./install-hive.sh
+# Fully automated - installs Node.js if needed
 
 clear
 echo ""
@@ -13,39 +14,50 @@ INSTALL_PATH="/usr/local/bin/ccode"
 SESSIONS_DIR="$HOME/.claude-sessions"
 SCRIPT_URL="https://raw.githubusercontent.com/fanning/hive-hiveskill/master/cc.sh"
 
+# Check if Node.js is installed
+if ! command -v node &> /dev/null; then
+    echo "Node.js not found. Installing..."
+    echo ""
+
+    # Detect package manager and install Node.js
+    if command -v apt-get &> /dev/null; then
+        # Debian/Ubuntu - use NodeSource
+        echo "Detected Debian/Ubuntu. Installing Node.js via NodeSource..."
+        curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+    elif command -v dnf &> /dev/null; then
+        # Fedora
+        echo "Detected Fedora. Installing Node.js..."
+        sudo dnf install -y nodejs npm
+    elif command -v yum &> /dev/null; then
+        # CentOS/RHEL
+        echo "Detected CentOS/RHEL. Installing Node.js via NodeSource..."
+        curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+        sudo yum install -y nodejs
+    elif command -v pacman &> /dev/null; then
+        # Arch Linux
+        echo "Detected Arch Linux. Installing Node.js..."
+        sudo pacman -Sy --noconfirm nodejs npm
+    elif command -v zypper &> /dev/null; then
+        # openSUSE
+        echo "Detected openSUSE. Installing Node.js..."
+        sudo zypper install -y nodejs npm
+    else
+        echo "Could not detect package manager."
+        echo "Please install Node.js manually from https://nodejs.org/"
+        exit 1
+    fi
+
+    echo "Node.js installed."
+    echo ""
+fi
+
 # Check if Claude CLI is installed
 if ! command -v claude &> /dev/null; then
-    echo "Claude CLI not found. Checking for npm..."
-    if ! command -v npm &> /dev/null; then
-        echo ""
-        echo "==================================================="
-        echo "  ERROR: Node.js is required"
-        echo "==================================================="
-        echo ""
-        echo "  Please install Node.js first:"
-        echo "  https://nodejs.org/"
-        echo ""
-        echo "  Or with your package manager:"
-        echo "    Ubuntu/Debian: sudo apt install nodejs npm"
-        echo "    Fedora: sudo dnf install nodejs npm"
-        echo "    Arch: sudo pacman -S nodejs npm"
-        echo ""
-        echo "  Then run this installer again."
-        echo "==================================================="
-        echo ""
-        exit 1
-    fi
-    echo "Installing Claude CLI via npm..."
+    echo "Installing Claude CLI..."
     echo "This may take a minute..."
-    npm install -g @anthropic-ai/claude-code
-    if [ $? -ne 0 ]; then
-        echo ""
-        echo "Failed to install Claude CLI. Try with sudo:"
-        echo "  sudo npm install -g @anthropic-ai/claude-code"
-        echo ""
-        exit 1
-    fi
-    echo "Claude CLI installed successfully."
+    sudo npm install -g @anthropic-ai/claude-code
+    echo "Claude CLI installed."
     echo ""
 fi
 
@@ -72,7 +84,7 @@ if [ -f "$INSTALL_PATH" ]; then
     echo ""
     echo "  Location: $INSTALL_PATH"
     echo ""
-    echo "  Open a new terminal and run:"
+    echo "  Open a NEW terminal and run:"
     echo "    ccode -h          Show help"
     echo "    ccode \"Project\"   Start a session"
     echo "    ccode -r          Restore a session"
