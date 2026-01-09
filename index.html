@@ -118,28 +118,6 @@
             color: #7ee787;
         }
 
-        .npm-section {
-            background: rgba(203, 56, 55, 0.1);
-            border: 1px solid rgba(203, 56, 55, 0.3);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .npm-section h4 {
-            color: #cb3837;
-            margin-bottom: 10px;
-        }
-
-        .npm-command {
-            background: #0d1117;
-            border-radius: 8px;
-            padding: 15px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            color: #7ee787;
-            font-size: 1.1em;
-        }
-
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -193,7 +171,7 @@
                 Not your OS?
                 <a href="install-hive.command" download id="mac-link">macOS</a>
                 <a href="install-hive.bat" download id="win-link">Windows</a>
-                <a href="#" onclick="showNpm(); return false;" id="linux-link">Linux</a>
+                <a href="install-hive.sh" download id="linux-link">Linux</a>
             </div>
 
             <div class="instructions" id="instructions">
@@ -203,11 +181,6 @@
                 </ol>
             </div>
 
-            <div class="npm-section" id="npm-section" style="display: none;">
-                <h4>Linux: Install via npm</h4>
-                <div class="npm-command">npm install -g @anthropic/hive-code</div>
-                <p style="margin-top: 10px; color: #909090; font-size: 0.9em;">Or download the shell script above</p>
-            </div>
         </div>
 
         <div class="features">
@@ -243,17 +216,12 @@
             return 'unknown';
         }
 
-        function showNpm() {
-            document.getElementById('npm-section').style.display = 'block';
-        }
-
         function setup() {
             const os = detectOS();
             const btn = document.getElementById('download-btn');
             const osName = document.getElementById('os-name');
             const detected = document.getElementById('os-detected');
             const instructions = document.getElementById('instructions-list');
-            const npmSection = document.getElementById('npm-section');
 
             if (os === 'windows') {
                 detected.textContent = 'Windows detected';
@@ -281,9 +249,8 @@
                 instructions.innerHTML = `
                     <li>Open terminal in your Downloads folder</li>
                     <li>Run: <code>chmod +x install-hive.sh && ./install-hive.sh</code></li>
-                    <li>Or use npm: <code>npm install -g @anthropic/hive-code</code></li>
+                    <li>Open a new terminal and type <code>ccode -h</code></li>
                 `;
-                npmSection.style.display = 'block';
             } else {
                 detected.textContent = 'Choose your platform below';
                 osName.textContent = 'your OS';
