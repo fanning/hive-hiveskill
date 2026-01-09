@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hive Code Bootstrap - Install with Crash Recovery</title>
+    <title>Hive Code - One-Click Install</title>
     <style>
         * {
             margin: 0;
@@ -20,327 +20,278 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        header {
+            padding: 60px 20px;
             text-align: center;
-            margin-bottom: 50px;
         }
 
         h1 {
-            font-size: 2.5em;
+            font-size: 3em;
             color: #fff;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .subtitle {
-            font-size: 1.2em;
+            font-size: 1.3em;
             color: #a0a0a0;
+            margin-bottom: 50px;
         }
 
-        .install-section {
+        .download-section {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .platform-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+        .os-detected {
+            font-size: 1.1em;
+            color: #7ee787;
+            margin-bottom: 25px;
         }
 
-        .tab {
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.1);
+        .download-btn {
+            display: inline-block;
+            padding: 20px 60px;
+            font-size: 1.4em;
+            background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
             border: none;
-            border-radius: 8px;
-            color: #e0e0e0;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.2s;
-        }
-
-        .tab:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .tab.active {
-            background: #4a9eff;
+            border-radius: 12px;
             color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(35, 134, 54, 0.4);
         }
 
-        .install-content {
-            display: none;
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(35, 134, 54, 0.6);
         }
 
-        .install-content.active {
-            display: block;
+        .other-platforms {
+            margin-top: 30px;
+            font-size: 0.95em;
+            color: #808080;
         }
 
-        .code-block {
+        .other-platforms a {
+            color: #4a9eff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .other-platforms a:hover {
+            text-decoration: underline;
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: left;
+            font-size: 0.95em;
+        }
+
+        .instructions h3 {
+            color: #4a9eff;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #c0c0c0;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .instructions code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            color: #7ee787;
+        }
+
+        .npm-section {
+            background: rgba(203, 56, 55, 0.1);
+            border: 1px solid rgba(203, 56, 55, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .npm-section h4 {
+            color: #cb3837;
+            margin-bottom: 10px;
+        }
+
+        .npm-command {
             background: #0d1117;
             border-radius: 8px;
-            padding: 20px;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 0.95em;
-            overflow-x: auto;
-            position: relative;
-            border: 1px solid #30363d;
-        }
-
-        .code-block code {
-            color: #58a6ff;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 8px 16px;
-            background: #238636;
-            border: none;
-            border-radius: 6px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 0.85em;
-            transition: background 0.2s;
-        }
-
-        .copy-btn:hover {
-            background: #2ea043;
-        }
-
-        .copy-btn.copied {
-            background: #1f6feb;
+            padding: 15px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            color: #7ee787;
+            font-size: 1.1em;
         }
 
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-top: 40px;
+            margin-top: 50px;
+            text-align: left;
         }
 
         .feature {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 10px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
         }
 
         .feature h3 {
             color: #4a9eff;
-            margin-bottom: 10px;
-            font-size: 1.1em;
+            margin-bottom: 8px;
+            font-size: 1em;
         }
 
         .feature p {
-            color: #a0a0a0;
-            font-size: 0.95em;
-        }
-
-        .usage-section {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 30px;
-            margin-top: 40px;
-        }
-
-        .usage-section h2 {
-            color: #fff;
-            margin-bottom: 20px;
-        }
-
-        .command-list {
-            display: grid;
-            gap: 15px;
-        }
-
-        .command-item {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-        }
-
-        .command-item code {
-            font-family: 'Monaco', 'Menlo', monospace;
-            color: #7ee787;
-            white-space: nowrap;
-            min-width: 200px;
-        }
-
-        .command-item span {
-            color: #a0a0a0;
+            color: #909090;
+            font-size: 0.9em;
         }
 
         footer {
-            text-align: center;
             margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #606060;
+            color: #505050;
+            font-size: 0.9em;
         }
 
         footer a {
             color: #4a9eff;
             text-decoration: none;
         }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        .note {
-            background: rgba(74, 158, 255, 0.1);
-            border-left: 3px solid #4a9eff;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 0 8px 8px 0;
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8em;
-            }
-            .command-item {
-                flex-direction: column;
-                gap: 5px;
-            }
-            .command-item code {
-                min-width: auto;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Hive Code Bootstrap</h1>
-            <p class="subtitle">Session tracking and crash recovery for Hive Code CLI</p>
-        </header>
+        <h1>Hive Code</h1>
+        <p class="subtitle">Session tracking and crash recovery for your CLI</p>
 
-        <div class="install-section">
-            <div class="platform-tabs">
-                <button class="tab active" onclick="showPlatform('macos')">macOS</button>
-                <button class="tab" onclick="showPlatform('linux')">Linux</button>
-                <button class="tab" onclick="showPlatform('windows')">Windows</button>
+        <div class="download-section">
+            <p class="os-detected" id="os-detected">Detecting your operating system...</p>
+
+            <a href="#" class="download-btn" id="download-btn" download>
+                Download for <span id="os-name">your OS</span>
+            </a>
+
+            <div class="other-platforms">
+                Not your OS?
+                <a href="install-hive.command" download id="mac-link">macOS</a>
+                <a href="install-hive.bat" download id="win-link">Windows</a>
+                <a href="#" onclick="showNpm(); return false;" id="linux-link">Linux</a>
             </div>
 
-            <div id="macos" class="install-content active">
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode('macos-code')">Copy</button>
-                    <code id="macos-code">curl -fsSL https://raw.githubusercontent.com/fanning/hive-hiveskill/master/install.sh | bash</code>
-                </div>
-                <div class="note">
-                    <strong>Note:</strong> Uses <code>ccode</code> command on macOS since <code>cc</code> is the C compiler.
-                </div>
+            <div class="instructions" id="instructions">
+                <h3>After downloading:</h3>
+                <ol id="instructions-list">
+                    <li>Loading...</li>
+                </ol>
             </div>
 
-            <div id="linux" class="install-content">
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode('linux-code')">Copy</button>
-                    <code id="linux-code">curl -fsSL https://raw.githubusercontent.com/fanning/hive-hiveskill/master/install.sh | bash</code>
-                </div>
-            </div>
-
-            <div id="windows" class="install-content">
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode('windows-code')">Copy</button>
-                    <code id="windows-code">irm https://raw.githubusercontent.com/fanning/hive-hiveskill/master/install.ps1 | iex</code>
-                </div>
-                <div class="note">
-                    <strong>Note:</strong> Run in PowerShell. For CMD, use: <code>powershell -Command "irm ... | iex"</code>
-                </div>
+            <div class="npm-section" id="npm-section" style="display: none;">
+                <h4>Linux: Install via npm</h4>
+                <div class="npm-command">npm install -g @anthropic/hive-code</div>
+                <p style="margin-top: 10px; color: #909090; font-size: 0.9em;">Or download the shell script above</p>
             </div>
         </div>
 
         <div class="features">
             <div class="feature">
                 <h3>Session Tracking</h3>
-                <p>Name your sessions with "Project : Goal : Task" format. Terminal title shows current context.</p>
+                <p>Name sessions with "Project : Goal : Task" format</p>
             </div>
             <div class="feature">
                 <h3>Crash Recovery</h3>
-                <p>All sessions logged and recoverable. Restore any crashed session with full conversation history.</p>
+                <p>Restore any crashed session instantly</p>
             </div>
             <div class="feature">
-                <h3>Output Logging</h3>
-                <p>Every session automatically logged to disk. Review what any agent was doing before a crash.</p>
+                <h3>Token Management</h3>
+                <p>Check expiry and renew auth tokens</p>
             </div>
             <div class="feature">
                 <h3>Cross-Platform</h3>
-                <p>Works on Windows, macOS, and Linux with the same commands and shared context.</p>
-            </div>
-        </div>
-
-        <div class="usage-section">
-            <h2>Usage</h2>
-            <div class="command-list">
-                <div class="command-item">
-                    <code>cc -h</code>
-                    <span>Show help and all available options</span>
-                </div>
-                <div class="command-item">
-                    <code>cc "Project : Goal : Task"</code>
-                    <span>Start a named session with context</span>
-                </div>
-                <div class="command-item">
-                    <code>cc -r</code>
-                    <span>Interactive picker to restore any session</span>
-                </div>
-                <div class="command-item">
-                    <code>cc -c</code>
-                    <span>Continue the most recent session</span>
-                </div>
-                <div class="command-item">
-                    <code>cc -l</code>
-                    <span>List all sessions with status</span>
-                </div>
+                <p>Works on Windows, macOS, and Linux</p>
             </div>
         </div>
 
         <footer>
-            <p>
-                <a href="https://github.com/fanning/hive-hiveskill">GitHub Repository</a>
-            </p>
-            <p style="margin-top: 10px;">Part of the AIVision Agent Network</p>
+            <a href="https://github.com/fanning/hive-hiveskill">GitHub</a>
         </footer>
     </div>
 
     <script>
-        function showPlatform(platform) {
-            // Update tabs
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-
-            // Update content
-            document.querySelectorAll('.install-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(platform).classList.add('active');
+        function detectOS() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            if (userAgent.includes('win')) return 'windows';
+            if (userAgent.includes('mac')) return 'macos';
+            if (userAgent.includes('linux')) return 'linux';
+            return 'unknown';
         }
 
-        function copyCode(elementId) {
-            const code = document.getElementById(elementId).textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const btn = event.target;
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = 'Copy';
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
+        function showNpm() {
+            document.getElementById('npm-section').style.display = 'block';
         }
+
+        function setup() {
+            const os = detectOS();
+            const btn = document.getElementById('download-btn');
+            const osName = document.getElementById('os-name');
+            const detected = document.getElementById('os-detected');
+            const instructions = document.getElementById('instructions-list');
+            const npmSection = document.getElementById('npm-section');
+
+            if (os === 'windows') {
+                detected.textContent = 'Windows detected';
+                osName.textContent = 'Windows';
+                btn.href = 'install-hive.bat';
+                instructions.innerHTML = `
+                    <li>Open the downloaded <code>install-hive.bat</code> file</li>
+                    <li>Click "Run anyway" if Windows warns you</li>
+                    <li>Open a new terminal and type <code>cc -h</code></li>
+                `;
+            } else if (os === 'macos') {
+                detected.textContent = 'macOS detected';
+                osName.textContent = 'macOS';
+                btn.href = 'install-hive.command';
+                instructions.innerHTML = `
+                    <li>Open the downloaded <code>install-hive.command</code> file</li>
+                    <li>If blocked: Right-click → Open → Open anyway</li>
+                    <li>Open Terminal and type <code>ccode -h</code></li>
+                `;
+            } else if (os === 'linux') {
+                detected.textContent = 'Linux detected';
+                osName.textContent = 'Linux';
+                btn.href = 'install-hive.sh';
+                btn.setAttribute('download', 'install-hive.sh');
+                instructions.innerHTML = `
+                    <li>Open terminal in your Downloads folder</li>
+                    <li>Run: <code>chmod +x install-hive.sh && ./install-hive.sh</code></li>
+                    <li>Or use npm: <code>npm install -g @anthropic/hive-code</code></li>
+                `;
+                npmSection.style.display = 'block';
+            } else {
+                detected.textContent = 'Choose your platform below';
+                osName.textContent = 'your OS';
+                btn.style.display = 'none';
+            }
+        }
+
+        setup();
     </script>
 </body>
 </html>
